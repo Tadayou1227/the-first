@@ -1,0 +1,452 @@
+/* 智能药盒 - 黑到灰白简洁风格 */
+
+/* 基础样式重置 */
+page {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #f8f9fa 100%);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  color: #333;
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+}
+
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: #ffffff;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+/* 主内容区域 */
+.main-content {
+  height: calc(100vh - 120px);
+  padding: 16px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 卡片样式 */
+.card {
+  background: #ffffff;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f0f0f0;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.card:active {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2d2d2d;
+  padding: 16px 20px;
+  border-bottom: 1px solid #f5f5f5;
+  display: flex;
+  align-items: center;
+}
+
+/* 时间显示 */
+.time-display {
+  font-size: 18px;
+  text-align: center;
+  color: #666;
+  padding: 20px;
+  font-weight: 500;
+}
+
+/* 状态显示 */
+.status {
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.status.connected {
+  background: linear-gradient(135deg, #e8f5e8, #f1f8e9);
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
+}
+
+.status.disconnected {
+  background: linear-gradient(135deg, #ffebee, #ffcdd2);
+  color: #c62828;
+  border: 1px solid #ffcdd2;
+}
+
+/* 按钮样式 */
+.btn-primary {
+  background: linear-gradient(135deg, #4caf50, #66bb6a);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 16px;
+  font-size: 16px;
+  width: 100%;
+  margin-top: 15px;
+  min-height: 50px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(76, 175, 80, 0.3);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #2196f3, #42a5f5);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  width: 100%;
+  margin-top: 15px;
+  min-height: 50px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(33, 150, 243, 0.3);
+}
+
+.btn-emergency {
+  background: linear-gradient(135deg, #f44336, #ef5350);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 16px;
+  font-size: 16px;
+  width: 100%;
+  margin-top: 10px;
+  min-height: 50px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-emergency:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(244, 67, 54, 0.3);
+}
+
+/* 服药列表 */
+.medication-list {
+  margin-bottom: 10px;
+}
+
+.medication-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.medication-item:last-child {
+  border-bottom: none;
+}
+
+.medicine-icon {
+  font-size: 18px;
+  margin-right: 12px;
+  width: 24px;
+  text-align: center;
+}
+
+.medication-item.taken .medicine-icon {
+  color: #4caf50;
+}
+
+.medication-item.pending .medicine-icon {
+  color: #ff9800;
+}
+
+.medicine-info {
+  flex: 1;
+}
+
+.medicine-name {
+  font-size: 16px;
+  color: #2d2d2d;
+  font-weight: 500;
+}
+
+.medicine-time {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+/* 记录状态 */
+.record-status {
+  text-align: center;
+  font-size: 16px;
+  color: #4caf50;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+/* 页面切换样式 */
+.page-content {
+  display: none;
+  width: 100%;
+  height: calc(100vh - 60px);
+  flex: 1;
+}
+
+.page-content.active {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 设置相关样式 */
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #2d2d2d;
+  padding: 0 20px;
+}
+
+.setting-section {
+  margin-bottom: 20px;
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.setting-item:last-child {
+  border-bottom: none;
+}
+
+.contact-input {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  width: 100%;
+  background: #fafafa;
+}
+
+/* 服药记录状态 */
+.medication-item.taken {
+  background: #f8f9fa;
+}
+
+.medication-item.pending {
+  background: #fff8e1;
+}
+
+/* 底部空间 */
+.bottom-space {
+  height: 60px;
+}
+
+/* 底部导航 */
+.bottom-nav {
+  background: #ffffff;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-around;
+  padding: 16px 0;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+}
+
+.nav-item:active {
+  background: #f8f9fa;
+}
+
+.nav-item.active {
+  background: linear-gradient(135deg, #e8f5e8, #f1f8e9);
+  color: #4caf50;
+  font-weight: 600;
+}
+
+.nav-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+}
+
+.nav-item.active .nav-text {
+  color: #4caf50;
+  font-weight: 600;
+}
+
+/* 设备名称显示 */
+.device-name {
+  padding: 12px;
+  border-radius: 6px;
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 16px;
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+}
+
+/* 记录统计网格 */
+.record-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.record-item {
+  text-align: center;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.record-label {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.record-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2d2d2d;
+}
+
+/* 联系人列表 */
+.contact-list {
+  margin-top: 16px;
+}
+
+.contact-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.contact-item:last-child {
+  border-bottom: none;
+}
+
+.contact-type {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.contact-info {
+  font-size: 14px;
+  color: #2d2d2d;
+  font-weight: 500;
+}
+
+/* 进度条 */
+.progress-info {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #f5f5f5;
+}
+
+.progress-text {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.progress-bar {
+  height: 6px;
+  background: #e0e0e0;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(135deg, #4caf50, #66bb6a);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+/* 响应式设计 */
+@media (max-width: 480px) {
+  .container {
+    max-width: 100%;
+    box-shadow: none;
+  }
+
+  .main-content {
+    padding: 12px;
+  }
+
+  .card {
+    margin-bottom: 12px;
+  }
+
+  .record-summary {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .nav-item {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+}
+
+/* 滚动条样式 */
+.main-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.main-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.main-content::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 2px;
+}
+
+.main-content::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}

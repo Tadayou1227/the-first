@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>智能药盒 - 简洁设计测试</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- 顶部状态栏 -->
+      <header class="status-bar">
+        <div class="current-time">
+          <span class="time-text">2025年4月16日 星期三 14:30:25</span>
+        </div>
+        <div class="connection-status">
+          <span class="status-dot connected"></span>
+          <span class="status-text">已连接</span>
+        </div>
+      </header>
+
+      <!-- 主内容区域 -->
+      <main class="main-content">
+        <!-- 蓝牙设备信息卡片 -->
+        <div class="card device-card">
+          <div class="card-header">
+            <span class="card-title">设备连接</span>
+          </div>
+          <div class="card-content">
+            <div class="device-info">
+              <div class="device-status">
+                <span class="status-badge connected">已连接</span>
+              </div>
+              <div class="device-details">
+                <span class="device-name">智能药盒 Pro</span>
+                <span class="device-id">ID: BLE-123456</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 服药计划卡片 -->
+        <div class="card plan-card">
+          <div class="card-header">
+            <span class="card-title">今日服药计划</span>
+          </div>
+          <div class="card-content">
+            <div class="medication-list">
+              <div class="medication-item taken">
+                <span class="medicine-icon">✅</span>
+                <div class="medicine-info">
+                  <span class="medicine-name">降压药</span>
+                  <span class="medicine-time">08:00</span>
+                </div>
+              </div>
+              <div class="medication-item taken">
+                <span class="medicine-icon">✅</span>
+                <div class="medicine-info">
+                  <span class="medicine-name">降糖药</span>
+                  <span class="medicine-time">12:00</span>
+                </div>
+              </div>
+              <div class="medication-item pending">
+                <span class="medicine-icon">⏰</span>
+                <div class="medicine-info">
+                  <span class="medicine-name">心脏药</span>
+                  <span class="medicine-time">18:00</span>
+                </div>
+              </div>
+            </div>
+            <div class="progress-info">
+              <span class="progress-text">今日进度：2/3 已完成</span>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 66.67%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 服药记录卡片 -->
+        <div class="card record-card">
+          <div class="card-header">
+            <span class="card-title">服药记录</span>
+          </div>
+          <div class="card-content">
+            <div class="record-summary">
+              <div class="record-item">
+                <span class="record-label">今日服药</span>
+                <span class="record-value">2/3 次</span>
+              </div>
+              <div class="record-item">
+                <span class="record-label">本周完成率</span>
+                <span class="record-value">95%</span>
+              </div>
+              <div class="record-item">
+                <span class="record-label">连续服药</span>
+                <span class="record-value">28 天</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 紧急联系人卡片 -->
+        <div class="card contact-card">
+          <div class="card-header">
+            <span class="card-title">紧急联系人</span>
+          </div>
+          <div class="card-content">
+            <div class="contact-list">
+              <div class="contact-item">
+                <span class="contact-type">家人</span>
+                <span class="contact-info">张先生 138****1234</span>
+              </div>
+              <div class="contact-item">
+                <span class="contact-type">急救</span>
+                <span class="contact-info">120 急救中心</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- 底部导航 -->
+      <nav class="bottom-nav">
+        <div class="nav-item active">
+          <span class="nav-text">首页</span>
+        </div>
+        <div class="nav-item">
+          <span class="nav-text">计划</span>
+        </div>
+        <div class="nav-item">
+          <span class="nav-text">记录</span>
+        </div>
+        <div class="nav-item">
+          <span class="nav-text">设置</span>
+        </div>
+      </nav>
+    </div>
+  </body>
+</html>

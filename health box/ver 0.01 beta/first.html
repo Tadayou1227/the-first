@@ -1,0 +1,1102 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes, orientation=portrait"
+    />
+    <title>智能药盒 - 老年友好版</title>
+    <style>
+      /* 基础样式 - 针对高龄用户优化 */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Microsoft YaHei", "Arial", sans-serif;
+        background-color: #f8f9fa;
+        color: #2c3e50;
+        font-size: 24px; /* 增大基础字体 */
+        line-height: 1.8;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+        -webkit-text-size-adjust: 100%; /* 防止字体缩放 */
+      }
+
+      /* 顶部导航栏 - 更大更清晰 */
+      .navbar {
+        background: linear-gradient(135deg, #4caf50, #45a049);
+        color: white;
+        padding: 25px 20px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      .navbar h1 {
+        font-size: 32px;
+        font-weight: bold;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+      }
+
+      /* 滚动容器 */
+      .scroll-container {
+        position: absolute;
+        top: 100px;
+        left: 0;
+        right: 0;
+        bottom: 90px;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 5px;
+      }
+
+      /* 主内容区域 */
+      .content {
+        padding: 15px;
+      }
+
+      /* 卡片样式 - 更大间距和圆角 */
+      .card {
+        background-color: white;
+        border-radius: 16px;
+        padding: 30px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border: 2px solid #e9ecef;
+      }
+
+      /* 按钮样式 - 更大更易点击 */
+      .button {
+        display: block;
+        width: 100%;
+        padding: 25px; /* 增大内边距 */
+        background: linear-gradient(135deg, #4caf50, #45a049);
+        color: white;
+        border: none;
+        border-radius: 15px; /* 增大圆角 */
+        font-size: 26px; /* 增大字体 */
+        font-weight: bold;
+        cursor: pointer;
+        margin-bottom: 25px; /* 增大间距 */
+        transition: all 0.3s ease;
+        box-shadow: 0 6px 12px rgba(76, 175, 80, 0.4); /* 增强阴影 */
+        min-height: 80px; /* 增大最小高度 */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #3d8b40; /* 添加边框增强对比度 */
+      }
+
+      .button:active {
+        transform: scale(0.98);
+        box-shadow: 0 2px 4px rgba(76, 175, 80, 0.3);
+      }
+
+      .button-secondary {
+        background: linear-gradient(135deg, #2196f3, #1976d2);
+        box-shadow: 0 4px 8px rgba(33, 150, 243, 0.3);
+      }
+
+      .button-secondary:active {
+        box-shadow: 0 2px 4px rgba(33, 150, 243, 0.3);
+      }
+
+      /* 标题样式 - 更大字体 */
+      h2 {
+        font-size: 32px; /* 增大标题字体 */
+        margin-bottom: 30px; /* 增大间距 */
+        color: #2c3e50;
+        font-weight: bold;
+        border-left: 8px solid #4caf50; /* 加粗边框 */
+        padding-left: 20px; /* 增大内边距 */
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* 添加文字阴影增强可读性 */
+      }
+
+      /* 状态显示 - 更醒目 */
+      .status {
+        font-size: 26px; /* 增大字体 */
+        padding: 25px; /* 增大内边距 */
+        background: linear-gradient(135deg, #e8f5e8, #d4edda);
+        border-radius: 15px; /* 增大圆角 */
+        margin-bottom: 30px; /* 增大间距 */
+        text-align: center;
+        border: 3px solid #c3e6cb; /* 加粗边框 */
+        font-weight: bold;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加阴影 */
+      }
+
+      /* 服药计划 - 更大间距和触摸友好 */
+      .schedule-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 25px; /* 增大内边距 */
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        border-radius: 15px; /* 增大圆角 */
+        margin-bottom: 20px; /* 增大间距 */
+        font-size: 24px; /* 增大字体 */
+        border: 3px solid #dee2e6; /* 加粗边框 */
+        cursor: pointer; /* 添加点击效果 */
+        transition: all 0.2s ease;
+        min-height: 70px; /* 最小高度确保易点击 */
+      }
+
+      .schedule-item:active {
+        transform: scale(0.98);
+        background: linear-gradient(135deg, #e9ecef, #dee2e6);
+      }
+
+      .schedule-item .time {
+        font-weight: bold;
+        color: #4caf50;
+        font-size: 26px; /* 增大时间字体 */
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+      }
+
+      .schedule-item .medicine {
+        font-weight: bold;
+        color: #2c3e50;
+        font-size: 26px; /* 增大药品字体 */
+      }
+
+      .schedule-item .medicine {
+        font-weight: bold;
+        color: #2c3e50;
+      }
+
+      /* 底部导航 - 更大图标和文字，触摸友好 */
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: white;
+        display: flex;
+        justify-content: space-around;
+        padding: 25px 0; /* 增大内边距 */
+        box-shadow: 0 -6px 16px rgba(0, 0, 0, 0.2); /* 增强阴影 */
+        border-top: 4px solid #f1f1f1; /* 加粗边框 */
+        z-index: 1000; /* 确保在最上层 */
+      }
+
+      .nav-item {
+        text-align: center;
+        font-size: 22px; /* 增大字体 */
+        color: #666;
+        padding: 15px 20px; /* 增大内边距 */
+        border-radius: 12px; /* 增大圆角 */
+        transition: all 0.3s ease;
+        min-width: 90px; /* 增大最小宽度 */
+        min-height: 60px; /* 最小高度确保易点击 */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      .nav-item.active {
+        color: #4caf50;
+        font-weight: bold;
+        background-color: #f0f9f0;
+        transform: scale(1.1);
+      }
+
+      /* 新增：紧急按钮 */
+      .emergency-button {
+        background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+        box-shadow: 0 4px 8px rgba(255, 107, 107, 0.4);
+        margin-top: 10px;
+      }
+
+      .emergency-button:active {
+        box-shadow: 0 2px 4px rgba(255, 107, 107, 0.4);
+      }
+
+      /* 新增：大号图标 */
+      .icon-large {
+        font-size: 32px;
+        margin-right: 10px;
+      }
+
+      /* 页面切换样式 */
+      .page-content {
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .page-content.active {
+        display: block;
+        opacity: 1;
+      }
+
+      /* 开关按钮样式 */
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+      }
+
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.4s;
+        border-radius: 34px;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+      }
+
+      input:checked + .slider {
+        background-color: #4caf50;
+      }
+
+      input:checked + .slider:before {
+        transform: translateX(26px);
+      }
+
+      /* 自定义悬浮窗样式 - 适老化设计 */
+      .custom-alert {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        z-index: 10000;
+        min-width: 300px;
+        max-width: 90%;
+        border: 4px solid #4caf50;
+        text-align: center;
+        font-size: 24px;
+        line-height: 1.6;
+        animation: alertFadeIn 0.3s ease;
+      }
+
+      .custom-alert-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        animation: overlayFadeIn 0.3s ease;
+      }
+
+      .custom-alert-title {
+        font-size: 28px;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 20px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+      }
+
+      .custom-alert-content {
+        font-size: 24px;
+        color: #555;
+        margin-bottom: 30px;
+        line-height: 1.8;
+      }
+
+      .custom-alert-button {
+        background: linear-gradient(135deg, #4caf50, #45a049);
+        color: white;
+        border: none;
+        border-radius: 15px;
+        padding: 20px 40px;
+        font-size: 24px;
+        font-weight: bold;
+        cursor: pointer;
+        margin: 0 10px;
+        min-width: 120px;
+        box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+        transition: all 0.3s ease;
+      }
+
+      .custom-alert-button:active {
+        transform: scale(0.95);
+        box-shadow: 0 2px 4px rgba(76, 175, 80, 0.3);
+      }
+
+      .custom-alert-button.cancel {
+        background: linear-gradient(135deg, #6c757d, #5a6268);
+        box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+      }
+
+      @keyframes alertFadeIn {
+        from {
+          opacity: 0;
+          transform: translate(-50%, -60%);
+        }
+        to {
+          opacity: 1;
+          transform: translate(-50%, -50%);
+        }
+      }
+
+      @keyframes overlayFadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* 响应式调整 - 针对高龄用户优化 */
+      @media (max-width: 480px) {
+        body {
+          font-size: 20px;
+        }
+
+        .navbar h1 {
+          font-size: 28px;
+        }
+
+        .card {
+          padding: 25px;
+          margin-bottom: 20px;
+        }
+
+        .button {
+          padding: 20px;
+          font-size: 22px;
+          min-height: 65px;
+        }
+
+        h2 {
+          font-size: 26px;
+        }
+
+        .status {
+          font-size: 22px;
+        }
+
+        .schedule-item {
+          font-size: 20px;
+          padding: 18px;
+        }
+
+        .nav-item {
+          font-size: 18px;
+        }
+      }
+
+      /* 高对比度模式支持 */
+      @media (prefers-contrast: high) {
+        body {
+          background-color: #ffffff;
+          color: #000000;
+        }
+
+        .card {
+          border: 3px solid #000000;
+          background-color: #ffffff;
+        }
+
+        .button {
+          border: 2px solid #000000;
+        }
+
+        .status {
+          border: 3px solid #000000;
+          background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+        }
+      }
+
+      /* 字体大小调整控件 */
+      .font-size-controls {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin: 20px 0;
+      }
+
+      .font-size-btn {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: #6c757d;
+        color: white;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+      }
+
+      .font-size-btn:active {
+        transform: scale(0.9);
+      }
+
+      /* 语音提示样式 */
+      .voice-control {
+        text-align: center;
+        margin: 20px 0;
+      }
+
+      .voice-btn {
+        background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+        border: none;
+        border-radius: 25px;
+        padding: 15px 30px;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(255, 107, 107, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 顶部导航栏 -->
+    <div class="navbar">
+      <h1>📦 智能药盒</h1>
+    </div>
+
+    <!-- 主内容区域 - 多页面容器 -->
+    <div class="scroll-container">
+      <!-- 首页内容 -->
+      <div id="home-page" class="page-content active">
+        <div class="content">
+          <!-- 当前时间显示 -->
+          <div class="card">
+            <h2>🕐 当前时间</h2>
+            <div class="status" id="current-time">正在加载时间...</div>
+          </div>
+
+          <!-- 连接状态 -->
+          <div class="card">
+            <h2>🔗 药盒连接</h2>
+            <div class="status">📡 当前状态：未连接</div>
+            <button class="button">📱 连接药盒</button>
+          </div>
+
+          <!-- 服药计划 -->
+          <div class="card">
+            <h2>📅 今日服药计划</h2>
+            <div class="schedule-item">
+              <span class="medicine">💊 降压药</span>
+              <span class="time">08:00</span>
+            </div>
+            <div class="schedule-item">
+              <span class="medicine">💊 降糖药</span>
+              <span class="time">12:00</span>
+            </div>
+            <div class="schedule-item">
+              <span class="medicine">💊 心脏药</span>
+              <span class="time">18:00</span>
+            </div>
+            <button class="button button-secondary">✏️ 修改计划</button>
+          </div>
+
+          <!-- 服药记录 -->
+          <div class="card">
+            <h2>📝 服药记录</h2>
+            <div class="status">✅ 今日已服药：0/3次</div>
+            <button class="button">📊 查看历史记录</button>
+          </div>
+
+          <!-- 适老化功能 -->
+          <div class="card">
+            <h2>👵 适老功能</h2>
+
+            <!-- 字体大小调整 -->
+            <div style="margin-bottom: 25px">
+              <div
+                style="font-size: 22px; margin-bottom: 15px; font-weight: bold"
+              >
+                📏 字体大小调整
+              </div>
+              <div class="font-size-controls">
+                <button
+                  class="font-size-btn"
+                  onclick="changeFontSize('smaller')"
+                >
+                  A-
+                </button>
+                <button
+                  class="font-size-btn"
+                  onclick="changeFontSize('normal')"
+                >
+                  A
+                </button>
+                <button
+                  class="font-size-btn"
+                  onclick="changeFontSize('larger')"
+                >
+                  A+
+                </button>
+              </div>
+            </div>
+
+            <!-- 语音提示 -->
+            <div class="voice-control">
+              <div
+                style="font-size: 22px; margin-bottom: 15px; font-weight: bold"
+              >
+                🔊 语音提示
+              </div>
+              <button class="voice-btn" onclick="speakCurrentTime()">
+                📢 播报当前时间
+              </button>
+            </div>
+          </div>
+
+          <!-- 紧急求助 -->
+          <div class="card">
+            <h2>🆘 紧急求助</h2>
+            <button class="button emergency-button">🚨 紧急呼叫家人</button>
+            <button class="button emergency-button">🏥 呼叫急救中心</button>
+          </div>
+
+          <!-- 底部空间，避免被导航栏遮挡 -->
+          <div style="height: 120px"></div>
+        </div>
+      </div>
+
+      <!-- 计划页面内容 -->
+      <div id="plan-page" class="page-content">
+        <div class="content">
+          <div class="card">
+            <h2>📅 服药计划管理</h2>
+            <div class="status">🕐 设置您的每日服药时间</div>
+
+            <!-- 计划设置表单 -->
+            <div style="margin: 20px 0">
+              <div
+                style="font-size: 24px; margin-bottom: 15px; font-weight: bold"
+              >
+                💊 添加新计划
+              </div>
+              <div style="display: flex; gap: 10px; margin-bottom: 20px">
+                <input
+                  type="time"
+                  style="
+                    flex: 1;
+                    padding: 15px;
+                    font-size: 20px;
+                    border-radius: 8px;
+                    border: 2px solid #ddd;
+                  "
+                />
+                <input
+                  type="text"
+                  placeholder="药品名称"
+                  style="
+                    flex: 2;
+                    padding: 15px;
+                    font-size: 20px;
+                    border-radius: 8px;
+                    border: 2px solid #ddd;
+                  "
+                />
+              </div>
+              <button class="button">➕ 添加计划</button>
+            </div>
+
+            <!-- 现有计划列表 -->
+            <div style="margin-top: 30px">
+              <div
+                style="font-size: 24px; margin-bottom: 15px; font-weight: bold"
+              >
+                📋 当前计划
+              </div>
+              <div class="schedule-item">
+                <span class="medicine">💊 降压药</span>
+                <span class="time">08:00</span>
+              </div>
+              <div class="schedule-item">
+                <span class="medicine">💊 降糖药</span>
+                <span class="time">12:00</span>
+              </div>
+              <div class="schedule-item">
+                <span class="medicine">💊 心脏药</span>
+                <span class="time">18:00</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="height: 120px"></div>
+        </div>
+      </div>
+
+      <!-- 记录页面内容 -->
+      <div id="record-page" class="page-content">
+        <div class="content">
+          <div class="card">
+            <h2>📝 服药记录</h2>
+            <div class="status">✅ 今日已服药：2/3次</div>
+
+            <!-- 服药记录列表 -->
+            <div style="margin: 20px 0">
+              <div
+                class="schedule-item"
+                style="background: linear-gradient(135deg, #d4edda, #c3e6cb)"
+              >
+                <span class="medicine">✅ 降压药</span>
+                <span class="time">08:05</span>
+              </div>
+              <div
+                class="schedule-item"
+                style="background: linear-gradient(135deg, #d4edda, #c3e6cb)"
+              >
+                <span class="medicine">✅ 降糖药</span>
+                <span class="time">12:10</span>
+              </div>
+              <div class="schedule-item">
+                <span class="medicine">⏰ 心脏药</span>
+                <span class="time">18:00</span>
+              </div>
+            </div>
+
+            <button class="button">📊 查看历史记录</button>
+            <button class="button button-secondary">🔄 手动添加记录</button>
+          </div>
+
+          <!-- 统计信息 -->
+          <div class="card">
+            <h2>📈 服药统计</h2>
+            <div class="status">🎯 本月服药完成率：95%</div>
+            <div style="text-align: center; margin: 20px 0">
+              <div style="font-size: 22px; margin: 10px 0">
+                📅 本月已服药：28/30天
+              </div>
+              <div style="font-size: 22px; margin: 10px 0">
+                ⏰ 平均服药时间：准时率92%
+              </div>
+            </div>
+          </div>
+
+          <div style="height: 120px"></div>
+        </div>
+      </div>
+
+      <!-- 设置页面内容 -->
+      <div id="settings-page" class="page-content">
+        <div class="content">
+          <div class="card">
+            <h2>⚙️ 系统设置</h2>
+
+            <!-- 通知设置 -->
+            <div style="margin: 20px 0">
+              <div
+                style="font-size: 24px; margin-bottom: 15px; font-weight: bold"
+              >
+                🔔 提醒设置
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  margin: 15px 0;
+                  padding: 15px;
+                  background: #f8f9fa;
+                  border-radius: 10px;
+                "
+              >
+                <span style="font-size: 22px">服药提醒声音</span>
+                <label class="switch">
+                  <input type="checkbox" checked />
+                  <span class="slider"></span>
+                </label>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  margin: 15px 0;
+                  padding: 15px;
+                  background: #f8f9fa;
+                  border-radius: 10px;
+                "
+              >
+                <span style="font-size: 22px">振动提醒</span>
+                <label class="switch">
+                  <input type="checkbox" checked />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 语音设置 -->
+            <div style="margin: 20px 0">
+              <div
+                style="font-size: 24px; margin-bottom: 15px; font-weight: bold"
+              >
+                🔊 语音设置
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  margin: 15px 0;
+                  padding: 15px;
+                  background: #f8f9fa;
+                  border-radius: 10px;
+                "
+              >
+                <span style="font-size: 22px">启用语音提示</span>
+                <label class="switch">
+                  <input type="checkbox" id="voice-enabled" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+              <button class="button" onclick="testVoice()">🎤 测试语音</button>
+            </div>
+
+            <!-- 紧急联系人 -->
+            <div style="margin: 20px 0">
+              <div
+                style="font-size: 24px; margin-bottom: 15px; font-weight: bold"
+              >
+                📞 紧急联系人
+              </div>
+              <input
+                type="tel"
+                placeholder="家人电话"
+                style="
+                  width: 100%;
+                  padding: 15px;
+                  font-size: 20px;
+                  border-radius: 8px;
+                  border: 2px solid #ddd;
+                  margin-bottom: 15px;
+                "
+              />
+              <input
+                type="tel"
+                placeholder="急救电话"
+                style="
+                  width: 100%;
+                  padding: 15px;
+                  font-size: 20px;
+                  border-radius: 8px;
+                  border: 2px solid #ddd;
+                  margin-bottom: 15px;
+                "
+              />
+              <button class="button">💾 保存设置</button>
+            </div>
+          </div>
+
+          <div style="height: 120px"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部导航 -->
+    <div class="bottom-nav">
+      <div class="nav-item active">🏠 首页</div>
+      <div class="nav-item">📅 计划</div>
+      <div class="nav-item">📝 记录</div>
+      <div class="nav-item">⚙️ 设置</div>
+    </div>
+
+    <script>
+      // 更新时间显示
+      function updateTime() {
+        const now = new Date();
+        const timeString = now.toLocaleString("zh-CN", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          weekday: "long",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        });
+        document.getElementById("current-time").textContent = timeString;
+      }
+
+      // 页面加载时更新时间
+      updateTime();
+      setInterval(updateTime, 1000);
+
+      // 按钮点击效果增强
+      document.querySelectorAll(".button").forEach((button) => {
+        button.addEventListener("click", function () {
+          this.style.transform = "scale(0.95)";
+          setTimeout(() => {
+            this.style.transform = "scale(1)";
+          }, 150);
+        });
+      });
+
+      // 紧急按钮特殊处理
+      document.querySelectorAll(".emergency-button").forEach((button) => {
+        button.addEventListener("click", function () {
+          showAlert(
+            "紧急求助已发送！家人和急救中心将很快联系您。",
+            "🆘 紧急求助",
+          );
+        });
+      });
+
+      // 导航项点击效果
+      document.querySelectorAll(".nav-item").forEach((item) => {
+        item.addEventListener("click", function () {
+          document
+            .querySelectorAll(".nav-item")
+            .forEach((i) => i.classList.remove("active"));
+          this.classList.add("active");
+        });
+      });
+
+      // 字体大小调整功能（修复版）
+      function changeFontSize(size) {
+        const body = document.body;
+        let newSize;
+
+        switch (size) {
+          case "smaller":
+            newSize = Math.max(18, parseInt(body.style.fontSize || 24) - 4);
+            break;
+          case "larger":
+            newSize = Math.min(32, parseInt(body.style.fontSize || 24) + 4);
+            break;
+          case "normal":
+          default:
+            newSize = 24;
+            break;
+        }
+
+        body.style.fontSize = newSize + "px";
+
+        // 同步调整其他元素的字体大小
+        document.querySelectorAll("h2").forEach((el) => {
+          el.style.fontSize = newSize + 8 + "px";
+        });
+
+        document.querySelectorAll(".button").forEach((el) => {
+          el.style.fontSize = newSize + 2 + "px";
+        });
+
+        // 保存用户偏好
+        localStorage.setItem("fontSize", newSize + "px");
+      }
+
+      // 语音播报功能
+      function speakCurrentTime() {
+        const now = new Date();
+        const timeString = now.toLocaleString("zh-CN", {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+
+        if ("speechSynthesis" in window) {
+          const utterance = new SpeechSynthesisUtterance(
+            `当前时间是 ${timeString}`,
+          );
+          utterance.lang = "zh-CN";
+          utterance.rate = 0.8; // 稍慢的语速
+          speechSynthesis.speak(utterance);
+        } else {
+          alert("您的浏览器不支持语音合成功能");
+        }
+      }
+
+      // 页面加载时恢复用户字体设置
+      window.addEventListener("load", function () {
+        const savedFontSize = localStorage.getItem("fontSize");
+        if (savedFontSize) {
+          document.body.style.fontSize = savedFontSize;
+        }
+      });
+
+      // 服药计划项点击效果
+      document.querySelectorAll(".schedule-item").forEach((item) => {
+        item.addEventListener("click", function () {
+          const medicine = this.querySelector(".medicine").textContent;
+          const time = this.querySelector(".time").textContent;
+
+          showAlert(`提醒：${time} 需要服用 ${medicine}`, "💊 服药提醒");
+
+          // 语音提醒（如果用户开启）
+          if (localStorage.getItem("voiceEnabled") === "true") {
+            if ("speechSynthesis" in window) {
+              const utterance = new SpeechSynthesisUtterance(
+                `提醒：${time} 服用 ${medicine}`,
+              );
+              utterance.lang = "zh-CN";
+              utterance.rate = 0.8;
+              speechSynthesis.speak(utterance);
+            }
+          }
+        });
+      });
+
+      // 页面切换功能
+      function switchPage(pageId) {
+        // 隐藏所有页面
+        document.querySelectorAll(".page-content").forEach((page) => {
+          page.classList.remove("active");
+        });
+
+        // 显示目标页面
+        const targetPage = document.getElementById(pageId);
+        if (targetPage) {
+          targetPage.classList.add("active");
+        }
+
+        // 更新导航激活状态
+        document.querySelectorAll(".nav-item").forEach((item) => {
+          item.classList.remove("active");
+        });
+
+        // 设置对应的导航项为激活状态
+        const navItems = {
+          "home-page": 0,
+          "plan-page": 1,
+          "record-page": 2,
+          "settings-page": 3,
+        };
+
+        if (navItems[pageId] !== undefined) {
+          document
+            .querySelectorAll(".nav-item")
+            [navItems[pageId]].classList.add("active");
+        }
+      }
+
+      // 初始化导航点击事件
+      document.querySelectorAll(".nav-item").forEach((item, index) => {
+        item.addEventListener("click", function () {
+          const pages = [
+            "home-page",
+            "plan-page",
+            "record-page",
+            "settings-page",
+          ];
+          switchPage(pages[index]);
+        });
+      });
+
+      // 测试语音功能
+      function testVoice() {
+        if ("speechSynthesis" in window) {
+          const utterance = new SpeechSynthesisUtterance("语音测试成功！");
+          utterance.lang = "zh-CN";
+          utterance.rate = 0.8;
+          speechSynthesis.speak(utterance);
+          showAlert("语音测试已播放，请检查音量设置", "🔊 语音测试");
+        } else {
+          showAlert("您的浏览器不支持语音合成功能", "⚠️ 不支持语音");
+        }
+      }
+
+      // 语音设置切换
+      document
+        .getElementById("voice-enabled")
+        .addEventListener("change", function () {
+          localStorage.setItem("voiceEnabled", this.checked);
+        });
+
+      // 页面加载时恢复语音设置
+      window.addEventListener("load", function () {
+        const voiceEnabled = localStorage.getItem("voiceEnabled") === "true";
+        document.getElementById("voice-enabled").checked = voiceEnabled;
+      });
+
+      // 自定义悬浮窗功能
+      function showCustomAlert(title, content, onConfirm, onCancel) {
+        // 创建遮罩层
+        const overlay = document.createElement("div");
+        overlay.className = "custom-alert-overlay";
+
+        // 创建弹窗
+        const alert = document.createElement("div");
+        alert.className = "custom-alert";
+        alert.innerHTML = `
+          <div class="custom-alert-title">${title}</div>
+          <div class="custom-alert-content">${content}</div>
+          <div>
+            ${onCancel ? `<button class="custom-alert-button cancel">取消</button>` : ""}
+            <button class="custom-alert-button confirm">确定</button>
+          </div>
+        `;
+
+        // 添加到页面
+        document.body.appendChild(overlay);
+        document.body.appendChild(alert);
+
+        // 绑定事件
+        const confirmBtn = alert.querySelector(".confirm");
+        const cancelBtn = alert.querySelector(".cancel");
+
+        confirmBtn.addEventListener("click", function () {
+          if (onConfirm) onConfirm();
+          closeAlert();
+        });
+
+        if (cancelBtn) {
+          cancelBtn.addEventListener("click", function () {
+            if (onCancel) onCancel();
+            closeAlert();
+          });
+        }
+
+        // 点击遮罩层关闭
+        overlay.addEventListener("click", function () {
+          if (onCancel) onCancel();
+          closeAlert();
+        });
+
+        function closeAlert() {
+          alert.remove();
+          overlay.remove();
+        }
+
+        return closeAlert;
+      }
+
+      // 简化版提示框（只有一个确定按钮）
+      function showAlert(content, title = "提示") {
+        showCustomAlert(title, content, null, null);
+      }
+    </script>
+  </body>
+</html>

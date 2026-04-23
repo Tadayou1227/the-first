@@ -1,0 +1,23 @@
+{
+  "pages": ["pages/index/index"],
+  "window": {
+    "navigationBarTitleText": "智能药盒",
+    "navigationBarBackgroundColor": "#4CAF50",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f8f9fa",
+    "backgroundTextStyle": "dark",
+    "enablePullDownRefresh": false
+  },
+  "permission": {
+    "scope.bluetooth": {
+      "desc": "需要蓝牙权限来连接智能药盒设备"
+    },
+    "scope.userLocation": {
+      "desc": "扫描蓝牙设备需要位置权限（Android要求）"
+    }
+  },
+  "networkTimeout": {
+    "request": 10000
+  },
+  "debug": true
+}

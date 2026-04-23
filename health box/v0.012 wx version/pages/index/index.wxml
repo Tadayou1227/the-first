@@ -1,0 +1,144 @@
+<!-- 智能药盒 - 老年友好版 -->
+<view class="container">
+  <!-- 首页内容 -->
+  <view class="page-content {{currentPage === 'home' ? 'active' : ''}}">
+    <scroll-view class="main-content" scroll-y="true">
+      <!-- 当前时间显示 -->
+      <view class="card">
+        <view class="card-title">当前时间</view>
+        <view class="time-display">{{currentTime}}</view>
+      </view>
+      <!-- 连接状态 -->
+      <view class="card">
+        <view class="card-title">药盒连接</view>
+        <view class="status {{isConnected ? 'connected' : 'disconnected'}}">{{isConnected ? '已连接' : '未连接'}}</view>
+        <view wx:if="{{isConnected && deviceName}}" class="device-name">设备：{{deviceName}}</view>
+        <view wx:else class="device-name">设备：未连接</view>
+        <button class="btn-primary" bindtap="toggleConnection">{{isConnected ? '刷新状态' : '检查连接'}}</button>
+      </view>
+      <!-- 今日服药计划 -->
+      <view class="card">
+        <view class="card-title">今日服药计划</view>
+        <view class="medication-list">
+          <view wx:for="{{medicationPlans}}" wx:key="index" class="medication-item {{item.taken ? 'taken' : 'pending'}}">
+            <text class="medicine-icon">{{item.taken ? '✅' : '⏰'}}</text>
+            <view class="medicine-info">
+              <text class="medicine-name">{{item.medicine}}</text>
+              <text class="medicine-time">{{item.time}}</text>
+            </view>
+          </view>
+        </view>
+        <button class="btn-secondary" bindtap="switchToPlan">管理计划</button>
+      </view>
+      <!-- 服药记录 -->
+      <view class="card">
+        <view class="card-title">服药记录</view>
+        <view class="record-status">今日已服药：{{takenCount}}/{{totalCount}}次</view>
+        <button class="btn-primary" bindtap="switchToRecord">查看记录</button>
+      </view>
+      <!-- 底部空间 -->
+      <view class="bottom-space" />
+    </scroll-view>
+  </view>
+  <!-- 计划页面内容 -->
+  <view class="page-content {{currentPage === 'plan' ? 'active' : ''}}">
+    <scroll-view class="main-content" scroll-y="true">
+      <!-- 返回首页按钮 -->
+      <view class="card">
+        <button class="btn-secondary" bindtap="switchToHome">返回首页</button>
+      </view>
+      <view class="card">
+        <view class="card-title">服药计划管理</view>
+        <view class="status">设置您的每日服药时间</view>
+        <!-- 现有计划列表 -->
+        <view class="current-plans">
+          <text class="section-title">当前计划</text>
+          <view wx:for="{{medicationPlans}}" wx:key="index" class="medication-item">
+            <text class="medicine-name">{{item.medicine}}</text>
+            <text class="medicine-time">{{item.time}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="bottom-space" />
+    </scroll-view>
+  </view>
+  <!-- 记录页面内容 -->
+  <view class="page-content {{currentPage === 'record' ? 'active' : ''}}">
+    <scroll-view class="main-content" scroll-y="true">
+      <!-- 返回首页按钮 -->
+      <view class="card">
+        <button class="btn-secondary" bindtap="switchToHome">返回首页</button>
+      </view>
+      <view class="card">
+        <view class="card-title">服药记录</view>
+        <view class="record-status">今日已服药：{{takenCount}}/{{totalCount}}次</view>
+        <!-- 服药记录列表 -->
+        <view class="records-list">
+          <view wx:for="{{medicationPlans}}" wx:key="index" class="medication-item {{item.taken ? 'taken' : 'pending'}}">
+            <text class="medicine-icon">{{item.taken ? '✅' : '⏰'}}</text>
+            <view class="medicine-info">
+              <text class="medicine-name">{{item.medicine}}</text>
+              <text class="medicine-time">{{item.time}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="bottom-space" />
+    </scroll-view>
+  </view>
+  <!-- 设置页面内容 -->
+  <view class="page-content {{currentPage === 'settings' ? 'active' : ''}}">
+    <scroll-view class="main-content" scroll-y="true">
+      <!-- 返回首页按钮 -->
+      <view class="card">
+        <button class="btn-secondary" bindtap="switchToHome">返回首页</button>
+      </view>
+      <view class="card">
+        <view class="card-title">系统设置</view>
+        <!-- 通知设置 -->
+        <view class="setting-section">
+          <text class="section-title">提醒设置</text>
+          <view class="setting-item">
+            <text>服药提醒声音</text>
+            <switch checked="{{soundEnabled}}" bindchange="toggleSound" />
+          </view>
+          <view class="setting-item">
+            <text>振动提醒</text>
+            <switch checked="{{vibrationEnabled}}" bindchange="toggleVibration" />
+          </view>
+        </view>
+        <!-- 语音设置 -->
+        <view class="setting-section">
+          <text class="section-title">语音设置</text>
+          <view class="setting-item">
+            <text>启用语音提示</text>
+            <switch checked="{{voiceEnabled}}" bindchange="toggleVoice" />
+          </view>
+        </view>
+        <!-- 紧急联系人 -->
+        <view class="setting-section">
+          <text class="section-title">紧急联系人</text>
+          <input class="contact-input" placeholder="家人电话" value="{{familyPhone}}" bindinput="onFamilyPhoneInput" />
+          <input class="contact-input" placeholder="急救电话" value="{{hospitalPhone}}" bindinput="onHospitalPhoneInput" />
+          <button class="btn-primary" bindtap="saveSettings">保存设置</button>
+        </view>
+      </view>
+      <view class="bottom-space" />
+    </scroll-view>
+  </view>
+  <!-- 底部导航 -->
+  <view class="bottom-nav">
+    <view class="nav-item {{currentPage === 'home' ? 'active' : ''}}" bindtap="switchToHome">
+      <text class="nav-text">首页</text>
+    </view>
+    <view class="nav-item {{currentPage === 'plan' ? 'active' : ''}}" bindtap="switchToPlan">
+      <text class="nav-text">计划</text>
+    </view>
+    <view class="nav-item {{currentPage === 'record' ? 'active' : ''}}" bindtap="switchToRecord">
+      <text class="nav-text">记录</text>
+    </view>
+    <view class="nav-item {{currentPage === 'settings' ? 'active' : ''}}" bindtap="switchToSettings">
+      <text class="nav-text">设置</text>
+    </view>
+  </view>
+</view>
