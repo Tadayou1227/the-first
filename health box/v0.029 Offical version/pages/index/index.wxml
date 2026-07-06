@@ -1,0 +1,212 @@
+<!-- 智能药盒  -->
+<view class="container">
+	<view class="page-content {{currentPage === 'home' ? 'active' : ''}}">
+		<scroll-view class="main-content" scroll-y="true">
+			<view class="card">
+				<view class="card-title">设备时间</view>
+				<text class="card-subhint">药盒里的时间，连上后会自动对齐。</text>
+				<view class="device-clock-row">
+					<text class="device-clock-main">{{deviceTimeText || '还没连上药盒，请到「设置」里点「连接药盒」'}}</text>
+				</view>
+			</view>
+			<view class="card todo-card {{promptItems.length > 0 ? 'has-todo' : 'empty-todo'}}">
+				<view class="card-title prompt-card-title">
+					<text class="prompt-title-dot"></text>
+					<text>温馨提示</text>
+				</view>
+				<text class="card-subhint">药盒和库存里需要您留意的事，点下面可展开全部。</text>
+				<view wx:if="{{promptItems.length > 0}}">
+					<view class="todo-item">{{promptItems[currentPromptIndex].title}}：{{promptItems[currentPromptIndex].detail}}</view>
+					<view class="prompt-submenu-group">
+						<view class="prompt-submenu" bindtap="togglePromptExpand">
+							<text class="prompt-submenu-text">{{isPromptExpanded ? '收起全部' : '展开全部'}}</text>
+							<text class="prompt-submenu-arrow {{isPromptExpanded ? 'expanded' : ''}}">⌄</text>
+						</view>
+						<view wx:if="{{isPromptExpanded}}" class="prompt-submenu-list prompt-submenu-list-enter">
+							<view wx:for="{{promptItems}}" wx:key="index" class="todo-item prompt-submenu-item">{{item.title}}：{{item.detail}}</view>
+						</view>
+					</view>
+				</view>
+				<view wx:else class="todo-empty-text">暂时没有要特别留意的事</view>
+			</view>
+			<view class="card" wx:if="{{iotSlots.length}}">
+				<view class="card-title">两个药仓</view>
+				<view class="portion-total">合计 <text class="iot-em">{{totalPortions}}</text> 份 · 有效服药 <text class="iot-em">{{validTakeDone}}/{{validTakeTotal}}</text> 次</view>
+				<view wx:for="{{iotSlots}}" wx:key="key" class="iot-slot-row">
+					<text class="iot-slot-name">{{item.title}}</text>
+					<text class="iot-slot-brief {{item.missedValue === 1 ? 'warn' : ''}}">{{item.briefText}}</text>
+				</view>
+			</view>
+			<view class="card">
+				<view class="card-title">今日服药</view>
+				<text class="card-subhint">每天两格药，点「标记已服」只记在手机里。</text>
+				<view class="medication-list">
+					<view wx:for="{{medicationPlans}}" wx:key="index" class="medication-item {{item.taken ? 'taken' : 'pending'}} {{item.alertLevel === 'warn' ? 'med-warn' : ''}}">
+						<text class="medicine-icon">{{item.taken ? '✅' : '⏰'}}</text>
+						<view class="medicine-info">
+							<text class="medicine-name">{{item.medicine}}</text>
+							<text wx:if="{{item.deviceHint}}" class="medicine-device-hint">{{item.deviceHint}}</text>
+						</view>
+						<button
+						 wx:if="{{!item.taken}}"
+						 class="mini-action-btn"
+						 data-index="{{index}}"
+						 bindtap="markAsTaken"
+						>标记已服
+						</button>
+					</view>
+				</view>
+				<button class="btn-secondary" bindtap="switchToPlan">查看全部计划</button>
+			</view>
+			<view class="card">
+				<view class="card-title">药盒的温湿度</view>
+				<text class="card-subhint">药盒里的温湿度，连上后会自动更新。</text>
+				<view class="env-reading-row">
+					<view class="env-reading-item">
+						<text class="env-reading-label">温度</text>
+						<text class="env-reading-value">约 <text class="iot-em">{{temperature}}</text> ℃</text>
+					</view>
+					<view class="env-reading-item">
+						<text class="env-reading-label">湿度</text>
+						<text class="env-reading-value">约 <text class="iot-em">{{humidity}}</text></text>
+					</view>
+				</view>
+				<view wx:if="{{envUploadSummary}}" class="env-upload-line">{{envUploadSummary}}</view>
+			</view>
+			<view class="card">
+				<view class="card-title">服药记录</view>
+				<text class="card-subhint">今天在手机里点过几次「标记已服」。</text>
+				<view class="record-status">今日标记 <text class="iot-em">{{takenCount}}</text> 次 · 有效服药 <text class="iot-em">{{validTakeDone}}/{{validTakeTotal}}</text> 次</view>
+				<button class="btn-primary" bindtap="switchToRecord">查看详细记录</button>
+			</view>
+			<view class="card" wx:if="{{lowStockMedicines.length || expiredMedicines.length}}">
+				<view class="card-title">库存与效期提醒</view>
+				<text class="card-subhint">您自己填的保质期和库存提醒，份数和上面药仓显示的一致。</text>
+				<view wx:for="{{lowStockMedicines}}" wx:key="name" class="portion-item warn-row">
+					<text>{{item.name}}</text>
+					<text>约剩 {{item.portions}} 份（偏低）</text>
+				</view>
+				<view wx:for="{{expiredMedicines}}" wx:key="name" class="portion-item warn-row">
+					<text>{{item.name}}</text>
+					<text>已过期</text>
+				</view>
+			</view>
+			<view class="bottom-space" />
+		</scroll-view>
+	</view>
+	<view class="page-content {{currentPage === 'plan' ? 'active' : ''}}">
+		<scroll-view class="main-content" scroll-y="true">
+			<view class="card">
+				<button class="btn-secondary" bindtap="switchToHome">返回首页</button>
+			</view>
+			<view class="card">
+				<view class="card-title">用药计划</view>
+				<text class="card-subhint">每天固定吃两格药；和首页「标记已服」联动。</text>
+				<view class="plan-summary-row">
+					<view class="plan-summary-item">
+						<text class="plan-summary-label">有效服药</text>
+						<text class="plan-summary-value">{{validTakeDone}}/{{validTakeTotal}} 次</text>
+					</view>
+					<view class="plan-summary-divider" />
+					<view class="plan-summary-item">
+						<text class="plan-summary-label">待标记</text>
+						<text class="plan-summary-value">{{totalCount - takenCount}} 次</text>
+					</view>
+				</view>
+				<view class="current-plans">
+					<text class="section-title">两格药</text>
+					<view wx:for="{{medicationPlans}}" wx:key="index" class="plan-list-item">
+						<view class="plan-main">
+							<text class="medicine-name">{{item.medicine}}</text>
+						</view>
+						<text class="plan-status {{item.taken ? 'done' : 'waiting'}}">{{item.taken ? '已服药' : '待服药'}}</text>
+						<text wx:if="{{item.deviceHint}}" class="plan-device-hint">{{item.deviceHint}}</text>
+					</view>
+				</view>
+      </view>
+      <view class="card">
+				<view class="card-title">说明</view>
+				<text class="plan-hint-text">药盒固定两格药，每天有效服药 2 次。药还剩多少、有没有漏服，以连上药盒后显示为准。</text>
+			</view>
+			<view class="bottom-space" />
+		</scroll-view>
+	</view>
+	<view class="page-content {{currentPage === 'record' ? 'active' : ''}}">
+		<scroll-view class="main-content" scroll-y="true">
+			<view class="card">
+				<button class="btn-secondary" bindtap="switchToHome">返回首页</button>
+			</view>
+			<view class="card">
+				<view class="card-title">服药记录</view>
+				<text class="card-subhint">您最近在手机里记下的吃药记录。</text>
+				<view class="record-status">今日标记 <text class="iot-em">{{takenCount}}</text> 次 · 有效服药 <text class="iot-em">{{validTakeDone}}/{{validTakeTotal}}</text> 次</view>
+				<view class="records-list">
+					<view wx:for="{{medicationHistory}}" wx:key="index" class="medication-item">
+						<text class="medicine-icon">{{item.status === '已服药' ? '✅' : '❗'}}</text>
+						<view class="medicine-info">
+							<text class="medicine-name">{{item.medicine}}</text>
+						</view>
+						<text class="history-status">{{item.status}}</text>
+					</view>
+				</view>
+        <button class="btn-primary" bindtap="goToGlobalHistoryPage">查看更早的历史</button>
+			</view>
+			<view class="bottom-space" />
+		</scroll-view>
+	</view>
+	<view class="page-content {{currentPage === 'settings' ? 'active' : ''}}">
+		<scroll-view class="main-content" scroll-y="true">
+			<view class="card">
+				<button class="btn-secondary" bindtap="switchToHome">返回首页</button>
+			</view>
+			<view class="card">
+				<view class="card-title">药盒连接</view>
+				<text class="card-subhint">连上药盒后，首页的药量、时间等会自动更新；连不上请检查网络和药盒是否开机。</text>
+				<view class="status {{isConnected ? 'connected' : 'disconnected'}}">{{isConnected ? '已连上药盒' : '还没连上，请重试'}}</view>
+				<view wx:if="{{isConnected && deviceName}}" class="device-name">药盒编号：{{deviceName}}</view>
+				<button class="btn-primary" bindtap="toggleConnection">{{isConnected ? '重新获取药盒信息' : '连接药盒'}}</button>
+        </view>
+				<view class="card">
+					<view class="card-title">提醒设置</view>
+					<text class="card-subhint">改好后请点最下面的保存。</text>
+				<view class="setting-section">
+					<text class="section-title">提醒方式</text>
+					<view class="setting-item">
+						<text>服药到点铃声</text>
+						<switch checked="{{soundEnabled}}" bindchange="toggleSound" />
+					</view>
+					<view class="setting-item">
+						<text>振动提醒</text>
+						<switch checked="{{vibrationEnabled}}" bindchange="toggleVibration" />
+					</view>
+				</view>
+				<view class="setting-section">
+					<text class="section-title">语音提示</text>
+					<view class="setting-item">
+						<text>是否朗读提示</text>
+						<switch checked="{{voiceEnabled}}" bindchange="toggleVoice" />
+					</view>
+				</view>
+				<view class="setting-section">
+					<button class="btn-primary" bindtap="saveSettings">保存本页设置</button>
+				</view>
+			 </view>
+			<view class="bottom-space" />
+		</scroll-view>
+	</view>
+	<view class="bottom-nav">
+		<view class="nav-item {{currentPage === 'home' ? 'active' : ''}}" bindtap="switchToHome">
+			<text class="nav-text">首页</text>
+		</view>
+		<view class="nav-item {{currentPage === 'plan' ? 'active' : ''}}" bindtap="switchToPlan">
+			<text class="nav-text">计划</text>
+		</view>
+		<view class="nav-item {{currentPage === 'record' ? 'active' : ''}}" bindtap="switchToRecord">
+			<text class="nav-text">记录</text>
+		</view>
+		<view class="nav-item {{currentPage === 'settings' ? 'active' : ''}}" bindtap="switchToSettings">
+			<text class="nav-text">设置</text>
+		</view>
+	</view>
+</view>
+

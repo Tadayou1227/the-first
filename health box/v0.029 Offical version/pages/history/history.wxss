@@ -1,0 +1,60 @@
+.page {
+  min-height: 100vh;
+  background: #f5f5f7;
+  display: flex;
+  justify-content: center;
+  padding: 16px 12px 24px;
+  box-sizing: border-box;
+}
+
+.panel {
+  width: 100%;
+  max-width: 414px;
+  background: #fff;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03);
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  padding: 18px 20px;
+}
+
+.empty-tip {
+  color: #8e8e93;
+  padding: 0 20px 20px;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 12px 20px;
+}
+
+.icon {
+  margin-right: 10px;
+}
+
+.info {
+  flex: 1;
+}
+
+.medicine {
+  display: block;
+  font-size: 16px;
+  color: #1d1d1f;
+}
+
+.time {
+  display: block;
+  font-size: 13px;
+  color: #8e8e93;
+}
+
+.status {
+  font-size: 13px;
+  color: #8e8e93;
+}

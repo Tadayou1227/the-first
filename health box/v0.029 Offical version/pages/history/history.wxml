@@ -1,0 +1,14 @@
+<view class="page">
+  <view class="panel">
+    <view class="title">全局服药历史记录</view>
+    <view wx:if="{{historyList.length === 0}}" class="empty-tip">暂无历史记录</view>
+    <view wx:for="{{historyList}}" wx:key="index" class="history-item">
+      <text class="icon">{{item.status === '已服药' ? '✅' : '❗'}}</text>
+      <view class="info">
+        <text class="medicine">{{item.medicine}}</text>
+        <text wx:if="{{item.time}}" class="time">{{item.time}}</text>
+      </view>
+      <text class="status">{{item.status}}</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,20 @@
+{
+  "pages": ["pages/index/index", "pages/history/history"],
+  "window": {
+    "navigationBarTitleText": "智能药盒",
+    "navigationBarBackgroundColor": "#4CAF50",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f8f9fa",
+    "backgroundTextStyle": "dark",
+    "enablePullDownRefresh": false
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "获取位置信息用于设备管理"
+    }
+  },
+  "networkTimeout": {
+    "request": 10000
+  },
+  "debug": true
+}

@@ -1,0 +1,848 @@
+page {
+  /* 换成类似 iOS 系统的浅灰底色，极简且干净 */
+  background: #f5f5f7;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica,
+    "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: #1d1d1f;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+  min-height: 100vh;
+  /* 移除原本的白色背景和阴影，让页面和底色融为一体 */
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  align-items: center; /* 确保内容居中 */
+  justify-content: flex-start; /* 顶部对齐 */
+}
+
+/* 主内容区域 - 设置固定宽度实现居中 */
+.main-content {
+  width: 100%;
+  max-width: 414px; /* 手机屏幕的标准宽度 */
+  height: calc(100vh - 100px); /* 给底部导航留出更多呼吸感 */
+  padding: 24px 16px; /* 增加一点内边距 */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: transparent;
+  margin: 0 auto; /* 水平居中 */
+}
+
+.main-content {
+  height: calc(100vh - 100px); /* 给底部导航留出更多呼吸感 */
+  padding: 24px 16px; /* 增加一点内边距 */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: transparent;
+  transform: translateX(-6px);
+}
+/* 卡片样式 - 拔掉边框，保留极其轻柔的阴影，加大圆角 */
+.card {
+  background: #ffffff;
+  border-radius: 20px; /* 圆角改大一点更现代 */
+  margin-bottom: 20px;
+  /* 极其轻柔的弥散阴影 */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03);
+  border: none; /* 坚决不要边框 */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  width: 100%; /* 确保卡片宽度适应容器 */
+}
+
+
+
+.card-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1d1d1f;
+  padding: 20px 24px 16px; /* 调整标题间距 */
+  border-bottom: none; /* 去掉标题下方的分割线，用留白区分 */
+  background: transparent;
+}
+
+.prompt-card-title {
+  display: flex;
+  align-items: center;
+}
+
+.prompt-title-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ffd6d6;
+  margin-right: 8px;
+  border: 1px solid #ffc3c3;
+}
+/* 黑色按钮，带点光泽，搞基感一下就上来了 */
+.btn-primary {
+  background: linear-gradient(135deg, #323233 0%, #1a1a1a 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 16px;
+  padding: 16px;
+  font-size: 16px;
+  width: calc(100% - 48px);
+  margin: 16px 24px 24px;
+  min-height: 56px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(26, 26, 26, 0.2);
+}
+
+.btn-primary:active {
+  animation: btnPress 0.18s ease-out;
+  transform: scale(0.95);
+  background: #1a1a1a;
+}
+
+@keyframes btnPress {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.94);
+  }
+  100% {
+    transform: scale(0.95);
+  }
+}
+
+/* 底部导航 - 毛玻璃/极简白 */
+.bottom-nav {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px); /* 增加毛玻璃效果 */
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-around;
+  padding: 12px 0 24px 0; /* 适配底部安全区 */
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(calc(-50% - 6px));
+  width: 100%;
+  max-width: 414px; /* 与主内容区域保持一致 */
+  z-index: 1000;
+}
+
+.nav-item.active {
+  /* 导航选中时，不要用大色块，用文字颜色和简单的背景色区分 */
+  background: #f5f5f7;
+  color: #1a1a1a;
+  font-weight: 600;
+  box-shadow: none;
+}
+
+.nav-item.active .nav-text {
+  color: #1a1a1a;
+}
+/* 服药列表 - 更精致的细节处理 */
+.medication-item {
+  display: flex;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+  transition: all 0.2s ease;
+}
+
+.medication-item:last-child {
+  border-bottom: none;
+}
+
+.medication-item:active {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.medicine-icon {
+  font-size: 20px;
+  margin-right: 16px;
+  width: 24px;
+  text-align: center;
+}
+
+.medicine-info {
+  flex: 1;
+}
+
+.medicine-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: #1d1d1f;
+  margin-bottom: 4px;
+}
+
+.medicine-time {
+  font-size: 14px;
+  color: #8e8e93;
+  font-weight: 400;
+}
+
+/* 状态颜色更克制，融入黑白灰主题 */
+.medication-item.taken .medicine-icon {
+  color: #1a1a1a; /* 已服药用纯黑表示完成 */
+}
+
+.medication-item.taken {
+  background: transparent;
+  opacity: 0.5; /* 已服药状态变淡，降低视觉层级 */
+}
+
+.medication-item.pending .medicine-icon {
+  color: #ff3b30; /* 待服药/警示用高饱和红色点缀，参考 iOS */
+}
+
+/* 设置项样式 - 统一iOS风格 */
+.setting-section {
+  margin-bottom: 0;
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+  transition: background-color 0.2s ease;
+}
+
+.setting-item:active {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.setting-item:last-child {
+  border-bottom: none;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin: 0 24px 12px;
+  padding-top: 20px;
+}
+
+/* 次级按钮样式 */
+.btn-secondary {
+  background: transparent;
+  color: #1a1a1a;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  padding: 14px;
+  font-size: 16px;
+  width: calc(100% - 48px);
+  margin: 0 24px 16px;
+  min-height: 52px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:active {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* 状态显示样式 */
+.status {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0 24px 16px;
+}
+
+.status.connected {
+  background: rgba(76, 217, 100, 0.1);
+  color: #34c759;
+}
+
+.status.disconnected {
+  background: rgba(255, 59, 48, 0.1);
+  color: #ff3b30;
+}
+
+/* 时间显示 */
+.time-display {
+  font-size: 24px;
+  line-height: 1.35;
+  color: #8e8e93;
+  text-align: center;
+  padding: 16px 24px 20px;
+  font-weight: 500;
+}
+
+/* 设备信息 */
+.device-name {
+  font-size: 14px;
+  color: #8e8e93;
+  margin: 0 24px 16px;
+}
+
+/* 记录状态 */
+.record-status {
+  font-size: 16px;
+  color: #1d1d1f;
+  text-align: center;
+  padding: 0 24px 20px;
+  font-weight: 500;
+}
+
+/* 底部空间 */
+.bottom-space {
+  height: 100px;
+}
+
+/* 页面内容区域 */
+.page-content {
+  display: none;
+  width: 100%;
+  align-items: center;
+}
+
+.page-content.active {
+  display: block;
+  animation: fadeIn 0.9s ease-out;
+}
+
+/* 导航项样式 */
+.nav-item {
+  flex: 1;
+  text-align: center;
+  padding: 8px 0;
+  border-radius: 12px;
+  margin: 0 8px;
+  transition: all 0.2s ease;
+}
+
+.nav-text {
+  font-size: 12px;
+  color: #8e8e93;
+  font-weight: 400;
+}
+
+.nav-item:active {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* 滚动视图优化 */
+scroll-view {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 列表样式优化 */
+.medication-list {
+  margin: 0;
+}
+
+.records-list {
+  margin: 0;
+}
+
+.current-plans {
+  margin: 0;
+}
+
+.plan-summary-row {
+  display: flex;
+  align-items: stretch;
+  margin: 0 24px 16px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 14px;
+  background: #fafafa;
+}
+
+.plan-summary-item {
+  flex: 1;
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.plan-summary-divider {
+  width: 1px;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.plan-summary-label {
+  font-size: 12px;
+  color: #8e8e93;
+  margin-bottom: 4px;
+}
+
+.plan-summary-value {
+  font-size: 16px;
+  color: #1d1d1f;
+  font-weight: 600;
+}
+
+.plan-list-item {
+  margin: 0 16px 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: #fff;
+}
+
+.plan-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.plan-time-badge {
+  font-size: 13px;
+  color: #1d1d1f;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 4px 10px;
+  border-radius: 10px;
+}
+
+.plan-status {
+  margin-top: 8px;
+  font-size: 13px;
+}
+
+.plan-status.waiting {
+  color: #ff3b30;
+}
+
+.plan-status.done {
+  color: #8e8e93;
+}
+
+/* 响应式设计 - 优化手机体验 */
+@media (max-width: 480px) {
+  .container {
+    max-width: 100%;
+  }
+
+  .main-content {
+    padding: 16px 12px;
+  }
+
+  .card {
+    border-radius: 16px;
+    margin-bottom: 16px;
+  }
+
+  .card-title {
+    font-size: 17px;
+    padding: 16px 20px 12px;
+  }
+
+  /* 按钮的大小 */
+  .btn-primary,
+  .btn-secondary {
+    width: calc(100% - 32px);
+    margin: 12px 16px 20px;
+    border-radius: 14px;
+    min-height: 48px;
+  }
+
+  .medication-item {
+    padding: 14px 20px;
+  }
+
+  .setting-item {
+    padding: 14px 20px;
+  }
+
+  .section-title {
+    margin: 0 20px 12px;
+    padding-top: 16px;
+  }
+
+  .status {
+    margin: 0 20px 12px;
+  }
+
+  .time-display {
+    padding: 12px 20px 16px;
+  }
+
+  .device-name {
+    margin: 0 20px 12px;
+  }
+
+  .record-status {
+    padding: 0 20px 16px;
+  }
+}
+
+/* 大屏设备优化 */
+@media (min-width: 768px) {
+  .container {
+    max-width: 414px;
+    margin: 0 auto;
+  }
+
+  .main-content {
+    padding: 32px 24px;
+  }
+
+  .card {
+    border-radius: 24px;
+    margin-bottom: 24px;
+  }
+}
+
+/* 动画效果增强 - 优化防止闪烁 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-content.active {
+  animation: fadeIn 0.2s ease-out;
+  animation-fill-mode: both; /* 确保动画结束后保持状态 */
+}
+
+/* 页面内容区域 - 使用更合理的布局 */
+.page-content {
+  display: none;
+  width: 100%;
+  flex: 1;
+}
+
+.page-content.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeIn 0.2s ease-out;
+  animation-fill-mode: both; /* 确保动画结束后保持状态 */
+}
+
+/* 加载状态 */
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* 错误状态 */
+.error {
+  color: #ff3b30;
+  background: rgba(255, 59, 48, 0.1);
+  padding: 12px 16px;
+  border-radius: 12px;
+  margin: 16px 24px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.sensor-current {
+  margin: 0 24px 12px;
+  color: #1d1d1f;
+  font-size: 14px;
+}
+
+.sensor-chart {
+  width: calc(100% - 32px);
+  height: 280px;
+  margin: 0 16px 8px;
+}
+
+.mini-action-btn {
+  margin: 0;
+  min-height: 32px;
+  line-height: 32px;
+  font-size: 12px;
+  border-radius: 10px;
+  background: #1a1a1a;
+  color: #fff;
+  padding: 0 10px;
+}
+
+.warn-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.warn-name {
+  font-weight: 600;
+}
+
+.warn-desc {
+  color: #ff3b30;
+  font-size: 13px;
+}
+
+.normal-tip {
+  padding: 0 24px 18px;
+  color: #8e8e93;
+}
+
+.portion-total {
+  padding: 0 24px 12px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.portion-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.custom-add-section {
+  padding-bottom: 8px;
+}
+
+.form-item {
+  padding: 0 24px 12px;
+}
+
+.form-label {
+  display: block;
+  font-size: 14px;
+  color: #4a4a4a;
+  margin-bottom: 8px;
+}
+
+.form-input {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 12px;
+  height: 40px;
+  padding: 0 12px;
+  font-size: 14px;
+  background: #fff;
+}
+
+.history-status {
+  color: #8e8e93;
+  font-size: 13px;
+}
+
+.todo-card {
+  border: 1px solid transparent;
+}
+
+.todo-card.has-todo {
+  background: #ffffff;
+  border-color: #e9e9eb;
+}
+
+.todo-card.empty-todo {
+  background: #f2f3f5;
+  border-color: #e4e6eb;
+}
+
+.todo-item {
+  margin: 0 24px 10px;
+  color: #2c2c2e;
+  font-size: 14px;
+}
+
+.todo-empty-text {
+  margin: 0 24px 18px;
+  color: #8e8e93;
+  font-size: 14px;
+}
+
+.prompt-submenu-group {
+  margin: 0 24px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #f7f7f8;
+  overflow: hidden;
+}
+
+.prompt-submenu {
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.prompt-submenu:active {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.prompt-submenu-text {
+  font-size: 14px;
+  color: #1d1d1f;
+  font-weight: 600;
+}
+
+.prompt-submenu-arrow {
+  font-size: 12px;
+  color: #8e8e93;
+  display: inline-block;
+  transform: rotate(0deg);
+  transition: transform 0.2s ease;
+}
+
+.prompt-submenu-arrow.expanded {
+  transform: rotate(180deg);
+}
+
+.prompt-submenu-list {
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  background: #ffffff;
+  padding: 6px 0;
+}
+
+.prompt-submenu-item {
+  margin: 0 14px 6px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #f5f5f7;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  color: #1d1d1f;
+}
+
+.prompt-submenu-item:last-child {
+  margin-bottom: 2px;
+}
+
+.prompt-submenu-list-enter {
+  animation: promptListFadeIn 0.2s ease-out;
+}
+
+@keyframes promptListFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card-subhint {
+  display: block;
+  font-size: 13px;
+  color: #8e8e93;
+  padding: 0 24px 12px;
+  line-height: 1.45;
+}
+
+.iot-em {
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+.device-clock-row {
+  padding: 8px 24px 20px;
+}
+
+.device-clock-main {
+  display: block;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  color: #1d1d1f;
+}
+
+.device-clock-tip {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #aeaeb2;
+}
+
+.iot-slot-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.iot-slot-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+.iot-slot-brief {
+  font-size: 14px;
+  color: #636366;
+  text-align: right;
+}
+
+.iot-slot-brief.warn {
+  color: #ff3b30;
+  font-weight: 600;
+}
+
+.medicine-device-hint {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #636366;
+  line-height: 1.4;
+}
+
+.medication-item.med-warn {
+  background: rgba(255, 59, 48, 0.04);
+}
+
+.env-reading-row {
+  display: flex;
+  gap: 12px;
+  padding: 0 24px 8px;
+}
+
+.env-reading-item {
+  flex: 1;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #f5f5f7;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.env-reading-label {
+  display: block;
+  font-size: 12px;
+  color: #8e8e93;
+  margin-bottom: 6px;
+}
+
+.env-reading-value {
+  font-size: 15px;
+  color: #1d1d1f;
+}
+
+.portion-item.warn-row {
+  color: #ff3b30;
+}
+
+.plan-device-hint {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  color: #636366;
+  line-height: 1.4;
+}
+
+.env-upload-line {
+  padding: 12px 24px 18px;
+  font-size: 13px;
+  color: #636366;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.plan-hint-text {
+  display: block;
+  padding: 0 24px 20px;
+  font-size: 14px;
+  color: #636366;
+  line-height: 1.55;
+}
